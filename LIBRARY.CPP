@@ -10,7 +10,8 @@ struct date
 	int year;
 };
 int check_leap(int);
-date incr_date(date );
+date incr_date(date);
+int count=1,count1=1;
 struct serial_no
 {
 	char department[3];
@@ -67,7 +68,7 @@ class stdid
 		gets(password);
 		cout<<"Enter password again to confirm:";
 		gets(temp_password);
-		while(!(strcmp(password,temp_password)))
+		while((strcmp(password,temp_password)))
 		{
 			cout<<"Passwords did not match.Enter password again:";
 			gets(password);
@@ -103,10 +104,13 @@ class stdid
 	{
 		return password;
 	}
+	int get_no_issued()
+	{
+		return no_issues;
+	}
 	void prnt_stdid()
 	{
-		clrscr();
-		cout<<"Name:";
+		cout<<"\nName:";
 		puts(name);
 		cout<<"Student id:";
 		puts(sno);
@@ -127,7 +131,7 @@ class stdid
 			gets(password);
 			cout<<"Enter new password again to confirm:";
 			gets(temp_password);
-			while(!(strcmp(password,temp_password)))
+			while((strcmp(password,temp_password)))
 			{
 				cout<<"Passwords did not match.Enter new password again:";
 				gets(password);
@@ -218,7 +222,7 @@ class stdid
 		}
 	}
 	void stdid::issue(serial_no obj);
-	void stdid::deposit(serial_no obj);
+	int stdid::deposit(serial_no obj);
 };
 class book
 {
@@ -264,8 +268,7 @@ class book
 	}
        void put_entry()
        {
-		clrscr();
-		cout<<"Name:";
+		cout<<"\nName:";
 		puts(book_name);
 		cout<<"Author:";
 		puts(author);
@@ -306,7 +309,7 @@ class book
        void modify()
        {
 		int ans='y';
-		int ch;
+		int ch,i;
 		while(ans=='y'||ans=='Y')
 		{
 			clrscr();
@@ -325,7 +328,7 @@ class book
 			switch(ch)
 			{
 				case 1: cout<<"Enter new name:";
-					gets(name);
+					gets(book_name);
 					sno.book[0]=book_name[0];
 					sno.book[1]=book_name[1];
 					while(book_name[i]!='\0')
@@ -388,7 +391,7 @@ void stdid::issue(serial_no obj)
 	change_issue(temp);
 	book_issued[no_issues]=obj;
 }
-void stdid::deposit(serial_no obj)
+int stdid::deposit(serial_no obj)
 {
 	int flag=0;
 	for(int i=0;i<no_issues;i++)
@@ -408,6 +411,7 @@ void stdid::deposit(serial_no obj)
 	}
 	if(flag==0)
 		cout<<"No book issued with this specifications";
+	return flag;
 }
 class librarian
 {
@@ -427,7 +431,7 @@ class librarian
 		gets(password);
 		cout<<"Enter Password again to confirm:";
 		gets(temp_pass);
-		while(!(strcmp(password,temp_pass)))
+		while((strcmp(password,temp_pass)))
 		{
 			clrscr();
 			cout<<"Passwords do not match.Enter Password again:";
@@ -438,7 +442,7 @@ class librarian
 	}
 	void put_data()
 	{
-		cout<<"Name:";
+		cout<<"\nName:";
 		puts(name);
 	}
 	char *get_name()
@@ -456,7 +460,7 @@ class librarian
 	void modify()
 	{
 		int ch;
-		char ans='y',old_password[14],temp_password[14];
+		char ans='y',old_pass[14],temp_password[14];
 		cout<<"Name of Librarian:";
 		puts(name);
 		while(ans=='y'||ans=='Y')
@@ -483,7 +487,7 @@ class librarian
 						gets(password);
 						cout<<"Enter new password again to confirm:";
 						gets(temp_password);
-						while(!(strcmp(password,temp_password)))
+						while((strcmp(password,temp_password)))
 						{
 							cout<<"Passwords did not match.Enter new password again:";
 							gets(password);
@@ -621,11 +625,12 @@ void student_record()
 	stdid obj;
 	while(ans=='y'||ans=='Y')
 	{
-		cout<<"Enter the record of next student:";
+		cout<<"Enter the record of next student:\n";
 		obj.stud_entry();
 		fout.write((char*)&obj,sizeof(obj));
 		cout<<"Want to enter more records?(Enter y for more records,any other key to terminate entry):";
 		cin>>ans;
+		clrscr();
 	}
 	fout.close();
 }
@@ -636,11 +641,12 @@ void book_record()
 	book obj1;
 	while(ans=='y'||ans=='Y')
 	{
-		cout<<"Enter the record of next book:";
+		cout<<"Enter the record of next book:\n";
 		obj1.book_entry();
 		fout.write((char*)&obj1,sizeof(obj1));
 		cout<<"Want to enter more records?(Enter y for more records,any other key to terminate entry):";
 		cin>>ans;
+		clrscr();
 	}
 	fout.close();
 }
@@ -651,11 +657,12 @@ void lib_record()
 	librarian obj2;
 	while(ans=='y'||ans=='Y')
 	{
-		cout<<"Enter the record of next librarian:";
+		cout<<"Enter the record of next librarian:\n";
 		obj2.enter_data();
 		fout.write((char*)&obj2,sizeof(obj2));
 		cout<<"Are there more librarians?(Enter y for yes,any other key for no):";
 		cin>>ans;
+		clrscr();
 	}
 	fout.close();
 }
@@ -671,6 +678,7 @@ void student_append()
 		fout.write((char*)&obj,sizeof(obj));
 		cout<<"Want to enter more records?(Enter y for more records,any other key to terminate entry):";
 		cin>>ans;
+		clrscr();
 	}
 	fout.close();
 }
@@ -686,6 +694,7 @@ void book_append()
 		fout.write((char*)&obj1,sizeof(obj1));
 		cout<<"Want to enter more records?(Enter y for more records,any other key to terminate entry):";
 		cin>>ans;
+		clrscr();
 	}
 	fout.close();
 }
@@ -701,6 +710,7 @@ void lib_append()
 		fout.write((char*)&obj2,sizeof(obj2));
 		cout<<"Are there more librarians?(Enter y for yes,any other key for no):";
 		cin>>ans;
+		clrscr();
 	}
 	fout.close();
 }
@@ -945,16 +955,458 @@ void lib_delete()
 	remove("Librarian.txt");
 	rename("Temp.txt","Librarian.txt");
 }
-
+void stud_modify(int ch)
+{
+	char sno[9];
+	int flag=0;
+	stdid obj;
+	fstream fin("Student.txt",ios::in|ios::out);
+	ios::beg;
+	cout<<"Enter the admission number of student whose record is to be modified:";
+	gets(sno);
+	while(!(fin.eof()))
+	{
+		fin.read((char*)&obj,sizeof(obj));
+		if(!(strcmp(obj.get_serial(),sno)))
+		{
+			if(!ch)
+				obj.modify_record();
+			else
+				obj.stud_modify();
+			fin.seekp(-1*sizeof(obj),ios::cur);
+			fin.write((char*)&obj,sizeof(obj));
+			flag=1;
+			break;
+		}
+	}
+	if(flag==0)
+		cout<<"No record found";
+	fin.close();
+}
+void book_modify()
+{
+	serial_no s1;
+	int flag=0;
+	book obj;
+	cout<<"Enter the first two letters of the Department to which book belongs:";
+	gets(s1.department);
+	cout<<"Enter the rack in which the book is in:";
+	gets(s1.rack);
+	cout<<"Enter the row in which book is kept:";
+	cin>>s1.row;
+	cout<<"Enter the first two letters of first name and second word of name of book(write first two letters of first word only for one word name book)";
+	gets(s1.book);
+	cout<<"Enter the copy number of book:";
+	gets(s1.copy_no);
+	fstream fin("Book.txt",ios::in|ios::out);
+	while(!(fin.eof()))
+	{
+		fin.read((char*)&obj,sizeof(obj));
+		if((struct_cmp(obj.get_sno(),s1)))
+		{
+			obj.modify();
+			fin.seekp(-1*sizeof(obj),ios::cur);
+			fin.write((char*)&obj,sizeof(obj));
+			flag=1;
+			break;
+		}
+	}
+	if(flag==0)
+		cout<<"No record found";
+	fin.close();
+}
+void lib_modify()
+{
+	int flag=1;
+	char username[14];
+	librarian obj;
+	fstream fin("Librarian.txt",ios::in|ios::out);
+	cout<<"Enter librarian username whose record you want to modify";
+	gets(username);
+	while(fin.read((char *)&obj,sizeof(obj)))
+	{
+		if(!(strcmp(obj.get_user(),username)))
+		{
+			obj.modify();
+			fin.seekp(-1*sizeof(obj),ios::cur);
+			fin.write((char*)&obj,sizeof(obj));
+			flag=1;
+			break;
+		}
+	}
+	if(flag==0)
+		cout<<"No record found";
+	fin.close();
+}
+void stud_show()
+{
+	fstream fin("Student.txt",ios::in);
+	stdid obj;
+	cout<<"\nAll students Record";
+	while(fin.read((char*)&obj,sizeof(obj)))
+		obj.prnt_stdid();
+	fin.close();
+}
+void book_show()
+{
+	fstream fin("Book.txt",ios::in);
+	book obj;
+	cout<<"\nAll Books Record";
+	while(fin.read((char*)&obj,sizeof(obj)))
+		obj.put_entry();
+	fin.close();
+}
+void lib_show()
+{
+	fstream fin("Librarian.txt",ios::in);
+	librarian obj;
+	cout<<"\nAll librarians Record";
+	while(fin.read((char*)&obj,sizeof(obj)))
+		obj.put_data();
+	fin.close();
+}
+void issue(char sn[9])
+{
+	fstream fin1("Book.txt",ios::in|ios::out);
+	fstream fin2("Student.txt",ios::in|ios::out);
+	serial_no sno;
+	book obj1;
+	stdid obj2;
+	char book_name[80];
+	int flag1=0,flag2=0,flag3=0,i=2;
+	cout<<"Enter the book name:";
+	gets(book_name);
+	cout<<"Enter the first two character of Department to which book belongs:";
+	scanf("%[^\n]",sno.department);
+	cout<<"Enter the rack number:";
+	scanf("%[^\n]",sno.rack);
+	cout<<"Enter the row in the rack:";
+	cin>>sno.row;
+	cout<<"Enter the copy number:";
+	scanf("[^\n]",sno.copy_no);
+	sno.book[0]=book_name[0];
+	sno.book[1]=book_name[1];
+	while(book_name[i]!='\0')
+	{
+		if(book_name[i]==' '&&book_name[i+1]!=' ')
+		{
+			sno.book[3]=book_name[i+1];
+			sno.book[4]=book_name[i+2];
+			break;
+		}
+		i++;
+	}
+	sno.book[5]='\0';
+	ios::beg;
+	while(!fin1.eof())
+	{
+		fin1.read((char *)&obj1,sizeof(obj1));
+		if(struct_cmp(obj1.get_sno(),sno))
+		{
+			flag1=1;
+			if(obj1.check_issued()=='n')
+			{
+				while(fin2.read((char *)&obj2,sizeof(obj2)))
+				{
+				if(!strcmp(obj2.get_serial(),sn))
+				{
+					if(obj2.get_no_issued()<3)
+					{
+						obj2.issue(sno);
+						obj1.issue(obj2);
+						flag2=1;
+					}
+					fin1.seekp(-1*sizeof(obj1),ios::cur);
+					fin1.write((char *)&obj1,sizeof(obj1));
+					fin2.seekp(-1*sizeof(obj2),ios::cur);
+					fin2.write((char *)&obj2,sizeof(obj2));
+					break;
+				}
+				}
+			}
+			else
+				flag3=1;
+			break;
+		}
+	}
+	if(flag1==0)
+		cout<<"Book not found";
+	else if(flag3==1)
+		cout<<"Book already issued";
+	else if(flag2==0)
+		cout<<"You have already issued a maximum of 4 books";
+	fin1.close();
+	fin2.close();
+}
+void deposit(char sn[9])
+{
+	fstream fin1("Book.txt",ios::in|ios::out);
+	fstream fin2("Student.txt",ios::in|ios::out);
+	serial_no sno;
+	book obj1;
+	stdid obj2;
+	char book_name[80];
+	int flag1=0,i=2;
+	cout<<"Enter the book name:";
+	gets(book_name);
+	cout<<"Enter the first two character of Department to which book belongs:";
+	scanf("%[^\n]",sno.department);
+	cout<<"Enter the rack number:";
+	scanf("%[^\n]",sno.rack);
+	cout<<"Enter the row in the rack:";
+	cin>>sno.row;
+	cout<<"Enter the copy number:";
+	scanf("[^\n]",sno.copy_no);
+	sno.book[0]=book_name[0];
+	sno.book[1]=book_name[1];
+	while(book_name[i]!='\0')
+	{
+		if(book_name[i]==' '&&book_name[i+1]!=' ')
+		{
+			sno.book[3]=book_name[i+1];
+			sno.book[4]=book_name[i+2];
+			break;
+		}
+		i++;
+	}
+	sno.book[5]='\0';
+	ios::beg;
+	while(fin2.read((char *)&obj2,sizeof(obj2)))
+	{
+		if(!strcmp(obj2.get_serial(),sn))
+		{
+			flag1=obj2.deposit(sno);
+			if(flag1==1)
+			{
+				while(fin1.read((char *)&obj1,sizeof(obj1)))
+				{
+					if(struct_cmp(obj1.get_sno(),sno))
+					{
+						obj1.deposit();
+						break;
+					}
+				}
+				cout<<"Book deposited";
+				fin1.seekp(-1*sizeof(obj1),ios::cur);
+				fin1.write((char *)&obj1,sizeof(obj1));
+				fin2.seekp(-1*sizeof(obj2),ios::cur);
+				fin2.write((char *)&obj2,sizeof(obj2));
+				break;
+			}
+			else
+				cout<<"Book not issued under your name";
+		}
+	}
+	fin1.close();
+	fin2.close();
+}
+void lib_menu()
+{
+	int ch,flag=0;
+	librarian obj;
+	fstream fin("Librarian.txt",ios::in);
+	char user[14],pass[14],name[80],id[9];
+	cout<<"Enter the username:";
+	gets(user);
+	ios::beg;
+	while(fin.read((char *)&obj,sizeof(obj)))
+	{
+		if(!strcmp(obj.get_user(),user))
+		{
+			flag=1;
+			do
+			{
+				cout<<"Enter the password:";
+				gets(pass);
+				if(strcmp(pass,obj.get_pass()))
+				{
+					cout<<"Wrong password!!!";
+				}
+			}while(strcmp(pass,obj.get_pass()));
+			break;
+		}
+	}
+	if(flag==0)
+		cout<<"Incorrect username";
+	else
+	{
+		while(1)
+		{
+			cout<<"\nLibrarian Menu";
+			cout<<"\n1.Add Student data";
+			cout<<"\n2.Add Books data";
+			cout<<"\n3.Add Librarian data";
+			cout<<"\n4.Delete Student data";
+			cout<<"\n5.Delete Books data";
+			cout<<"\n6.Delete Librarian data";
+			cout<<"\n7.Modify Student data";
+			cout<<"\n8.Modify Books data";
+			cout<<"\n9.Modify Librarian data";
+			cout<<"\n10.Show Student Record";
+			cout<<"\n11.Show Book Record";
+			cout<<"\n12.Show Librarian Record";
+			cout<<"\n13.Search student Record by name";
+			cout<<"\n14.Search student record by admission number";
+			cout<<"\n15.Exit";
+			cout<<"Enter the number corresponding to your choice";
+			cin>>ch;
+			switch(ch)
+			{
+				case 1: if(count==1)
+						student_record();
+					else
+						student_append();
+					count++;
+					break;
+				 case 2: if(count1==1)
+						book_record();
+					 else
+						book_append();
+					 count1++;
+					 break;
+				 case 3: lib_append();
+					 break;
+				 case 4: stud_delete();
+					 break;
+				 case 5: book_deletion();
+					 break;
+				 case 6: lib_delete();
+					 break;
+				 case 7: stud_modify(0);
+					 break;
+				 case 8: book_modify();
+					 break;
+				 case 9: lib_modify();
+					 break;
+				case 10: stud_show();
+					 break;
+				case 11: book_show();
+					 break;
+				case 12: lib_show();
+					 break;
+				case 13: cout<<"\nEnter the Student name:";
+					 gets(name);
+					 search_student(name);
+					 break;
+				case 14: cout<<"\nEnter the student id:";
+					 gets(id);
+					 search_student_id(id);
+					 break;
+				case 15: break;
+				default: cout<<"\nWrong choice!!!!";
+					 break;
+			}
+			if(ch==15)
+				break;
+		}
+	}
+}
+void stud_menu()
+{
+	stdid obj;
+	int ch,flag=0;
+	fstream fin("Student.txt",ios::in);
+	char name[80],user[14],pass[14],book[80],author[80],publisher[80];
+	cout<<"Enter your registered name:";
+	gets(name);
+	ios::beg;
+	while(fin.read((char *)&obj,sizeof(obj)))
+	{
+		if(!strcmp(obj.get_name(),name))
+		{
+			flag=1;
+			if(obj.get_user()=="\0")
+				obj.user_information();
+			else
+			{
+				cout<<"Enter the username:";
+				gets(user);
+				if(!strcmp(obj.get_user(),user))
+				{
+					do
+					{
+						cout<<"Enter the password:";
+						gets(pass);
+						if(strcmp(pass,obj.get_pass()))
+						{
+							cout<<"Wrong password!!!";
+						}
+					}while(strcmp(pass,obj.get_pass()));
+				}
+				else
+					cout<<"\nWrong username!!!";
+			}
+		}
+		break;
+	}
+	if(flag==0)
+	{
+		cout<<"No Record found";
+	}
+	else
+	{
+		while(1)
+		{
+			cout<<"\nStudent Menu";
+			cout<<"\n1.Issue/Renew Books";
+			cout<<"\n2.Deposit Books";
+			cout<<"\n3.Search Book by name";
+			cout<<"\n4.Search Book by author name";
+			cout<<"\n5.Search Book by publisher name";
+			cout<<"\n6.Change Username or Password";
+			cout<<"\n7.Exit";
+			cout<<"Enter the number corresponding to your choice:";
+			cin>>ch;
+			switch(ch)
+			{
+				case 1: issue(obj.get_serial());
+					break;
+				case 2: deposit(obj.get_serial());
+					break;
+				case 3: cout<<"Enter the book name:";
+					gets(book);
+					search_book_name(book);
+					break;
+				case 4: cout<<"Enter the author name:";
+					gets(author);
+					search_book_author(author);
+					break;
+				case 5: cout<<"Enter the publisher name:";
+					gets(publisher);
+					search_book_publisher(publisher);
+					break;
+				case 6: stud_modify(1);
+					break;
+				case 7: break;
+			       default: cout<<"\nWrong choice";
+					break;
+			}
+			if(ch==7)
+				break;
+		}
+	}
+}
 void main()
 {
 	clrscr();
-	date d1,d2;
-	cout<<"Enter day,month and year of date:";
-	scanf("%d/",&d1.day);
-	scanf("%d/",&d1.month);
-	scanf("%d/",&d1.year);
-	d2=incr_date(d1);
-	cout<<"Due date is:"<<d2.day<<"\/"<<d2.month<<"/"<<d2.year;
-	getch();
+	librarian obj;
+	int ch;
+	cout<<"Enter information about librarians:\n";
+	lib_record();
+	while(1)
+	{
+		cout<<"\nInput the number corresponding to group you belong:";
+		cout<<"\n1.Librarian";
+		cout<<"\n2.Student\n";
+		cin>>ch;
+		switch(ch)
+		{
+			case 1: lib_menu();
+				break;
+			case 2: stud_menu();
+				break;
+		       default: cout<<"\nWrong choice!!!";
+				break;
+		}
+	}
 }
